@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<script type="text/javascript">
+ws = null;
+
+function sendMsg(){
+    var msg = document.getElementById("msg_input").value;
+    console.log("Sending: " + msg);
+    if(ws){
+        ws.send(msg);
+    }
+};
+
+function recvMsg(evt) {
+        console.log("Receiving msg: " + evt.data);
+        var received_msg = evt.data;
+        //alert("Message \"" + received_msg + "\"is received...");
+        var chat = document.getElementById("chat");
+        msg_node = document.createTextNode(received_msg);
+        var br = document.createElement("br");
+        chat.appendChild(br);
+        chat.appendChild(msg_node);
+};
+
+function Connect()
+{
+  if ("WebSocket" in window)
+  {
+     nickname = document.getElementById("nickname").value;
+     if(nickname.length <= 0){
+         alert("Nickname cannot be empty");
+         return;
+     }
+
+     recvMsg({"data": "WebSocket is supported by your Browser!"});
+     // Let us open a web socket
+     ws = new WebSocket("ws://192.168.55.207:9160");
+     ws.onopen = function()
+     {
+        // Web Socket is connected, send data using send()
+        ws.send("Hi! I am "+nickname);
+        //alert("Message is sent...");
+     };
+     ws.onmessage = recvMsg;
+     ws.onclose = function()
+     { 
+        // websocket is closed.
+        //alert("Connection is closed..."); 
+        console.log("Connection is closed");
+     };
+  }
+  else
+  {
+     // The browser doesn't support WebSocket
+     alert("WebSocket NOT supported by your Browser!");
+  }
+}
+</script>
+</head>
+<body>
+<div id="sse">
+   <label for="nickname">Nickname:</label>
+   <input id="nickname" type="text"/>
+   <a href="javascript:Connect()">Connect</a>
+</div>
+<div id="chat">
+
+</div>
+<div id="control">
+    <input type="text" id="msg_input"/>
+    <button onclick="sendMsg()">Send</button>
+</div>
+</body>
+</html>
