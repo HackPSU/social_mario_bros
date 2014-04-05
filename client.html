@@ -35,11 +35,11 @@ function Connect()
 
      recvMsg({"data": "WebSocket is supported by your Browser!"});
      // Let us open a web socket
-     ws = new WebSocket("ws://192.168.55.207:9160");
+     ws = new WebSocket("ws://192.168.55.207:9898");
      ws.onopen = function()
      {
         // Web Socket is connected, send data using send()
-        ws.send("Hi! I am "+nickname);
+        ws.send(nickname);
         //alert("Message is sent...");
      };
      ws.onmessage = recvMsg;
