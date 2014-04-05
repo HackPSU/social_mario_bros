@@ -4,8 +4,8 @@
 <script type="text/javascript">
 ws = null;
 
-function sendMsg(){
-    var msg = document.getElementById("msg_input").value;
+function sendMsg(key){
+    var msg = key;
     console.log("Sending: " + msg);
     if(ws){
         ws.send(msg);
@@ -55,6 +55,11 @@ function Connect()
      // The browser doesn't support WebSocket
      alert("WebSocket NOT supported by your Browser!");
   }
+}
+
+    window.addEventListener('keydown', this.check, false);
+function check(e){
+    sendMsg(e.keyCode);
 }
 </script>
 </head>
